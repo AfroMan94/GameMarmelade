@@ -315,6 +315,11 @@ Prefab:
       propertyPath: m_GravityScale
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 114610428429156720, guid: 5cab8b03dc97e274ea6d67cf14404b0b,
+        type: 2}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 5cab8b03dc97e274ea6d67cf14404b0b, type: 2}
   m_IsPrefabParent: 0
@@ -329,7 +334,7 @@ MonoBehaviour:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 769373017}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0afac2c14b2f53a4b8ac090beaa1d6a7, type: 3}
   m_Name: 
@@ -399,6 +404,12 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
+--- !u!114 &1237524168 stripped
+MonoBehaviour:
+  m_PrefabParentObject: {fileID: 114901193576708212, guid: f5f0053fc26a87f4aa7fcf9d870acdfc,
+    type: 2}
+  m_PrefabInternal: {fileID: 2141637095}
+  m_Script: {fileID: 11500000, guid: 538e9c8e3c929b648bc78955e9d510fa, type: 3}
 --- !u!1001 &1645426485
 Prefab:
   m_ObjectHideFlags: 0
@@ -442,6 +453,11 @@ Prefab:
       propertyPath: m_Name
       value: Obstacle Down
       objectReference: {fileID: 0}
+    - target: {fileID: 114610428429156720, guid: 5cab8b03dc97e274ea6d67cf14404b0b,
+        type: 2}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 5cab8b03dc97e274ea6d67cf14404b0b, type: 2}
   m_IsPrefabParent: 0
@@ -472,7 +488,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b3f54b1cf1f52df44921be3546924464, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  obstaclesSpeed: 20
+  obstaclesSpeed: 5
+  basicSpeed: 0
+  swipeRight: 0
+  swipe: {fileID: 1237524168}
 --- !u!4 &1950485771
 Transform:
   m_ObjectHideFlags: 0

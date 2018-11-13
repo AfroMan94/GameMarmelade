@@ -8,12 +8,14 @@ public class PlayerScript : MonoBehaviour {
 
     public bool isJumping;
     public bool isGrounded;
+    private bool tap, swipeLeft, swipeRight, swipeUp, swipeDown;
+    private bool isDragging = false;
+
+    private Vector2 startTouch, swipeDelta;
 
     public Transform feetPos;
     public float checkRadius;
     public LayerMask whatIsGround;
-
-    bool startTouch = false;
 
     public float jumpForce;
     public float speed;
@@ -29,15 +31,83 @@ public class PlayerScript : MonoBehaviour {
         rb = this.GetComponent<Rigidbody2D>();
 	}
 
-	void FixedUpdate () {
+    private void Update()
+    {
+        tap = swipeLeft = swipeRight = swipeUp = swipeDown=false;
+        isGrounded = Physics2D.OverlapCircle(feetPos.position, checkRadius, whatIsGround);
+    }
 
+    void FixedUpdate () {
 
 		if (Input.touchCount > 0)
         {
+            //Checking tap phases
+            if (Input.touches[0].phase == TouchPhase.Began)
+            {
+                tap = true;
+                isDragging = true;
+                startTouch = Input.touches[0].position;
+            }
+            else if (Input.touches[0].phase == TouchPhase.Ended || Input.touches[0].phase==TouchPhase.Canceled)
+            {
+                isDragging = false;
+                Reset();
+            }
 
+            //Swipe distance calculations
+            swipeDelta = Vector2.zero;
+            if (isDragging)
+            {
+                if (Input.touches.Length > 0)
+                {
+                    swipeDelta = Input.touches[0].position - startTouch;
+                    
+                }
+            }
+
+            if (swipeDelta.magnitude > 100)
+            {
+                //Which direction?
+                float x = swipeDelta.x;
+                float y = swipeDelta.y;
+                if(Mathf.Abs(x)>Mathf.Abs(y))
+                {
+                    //Left or right
+                    if (x < 0)
+                    {
+                        swipeLeft = true;
+                        Debug.Log("left");
+                    }
+                    else
+                    {
+                        swipeRight = true;
+                        Debug.Log("right");
+                        GameObject.Find("mainObject").GetComponent<PublicValuesHandler>().swipeRight = true;
+                    }
+                }
+                else
+                {
+                    //Up or down
+                    if (y < 0)
+                    {
+                        swipeDown = true;
+                        Debug.Log("down");
+
+                    }
+                    else
+                    {
+                        swipeUp = true;
+                        Debug.Log("up");
+                    }
+                }
+
+                Reset();
+            }
+
+
+            //Jumping logic
             if (isGrounded==true&& isJumping == false)
             {
-                Debug.Log("tapped");
                 TapJump();
             }
             if (isJumping == true)
@@ -59,6 +129,12 @@ public class PlayerScript : MonoBehaviour {
 
     }
 
+    private void Reset()
+    {
+        startTouch = swipeDelta=  Vector2.zero;
+        isDragging = false;
+    }
+
     void TapJump()
     {
         jumpTimeCounter = jumpTime;
@@ -71,15 +147,18 @@ public class PlayerScript : MonoBehaviour {
         rb.velocity = Vector2.up * jumpForce;
         jumpTimeCounter -= Time.deltaTime;
     }
-
-    private void Update()
-    {
-        isGrounded = Physics2D.OverlapCircle(feetPos.position,checkRadius,whatIsGround);
-    }
+    
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-
+        
     }
+
+    public Vector2 SwipeDelta { get { return swipeDelta; } }
+    public bool SwipeLeft { get { return swipeLeft; } }
+    public bool SwipeRight { get { return swipeRight; } }
+    public bool SwipeUp { get { return swipeUp; } }
+    public bool SwipeDown { get { return swipeDown; } }
+    
 
 }
